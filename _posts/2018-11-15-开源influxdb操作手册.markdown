@@ -212,11 +212,11 @@ influx_inspect export -database NOAA_water_database -retention autogen -waldir ~
 ```
 > 更多 [influx_inspect官方文档](https://docs.influxdata.com/influxdb/v1.7/tools/influx_inspect/)
 
-### 身份认证与授权管理
->[身份认证与授权管理](https://docs.influxdata.com/influxdb/v1.7/administration/authentication_and_authorization/)
+
 
 ### 身份认证与授权管理
->[身份认证与授权管理](https://docs.influxdata.com/influxdb/v1.7/administration/authentication_and_authorization/)
+> [身份认证与授权管理](https://docs.influxdata.com/influxdb/v1.7/administration/authentication_and_authorization/)
+
 ## 安全
 ### 开启HTTPS
 [HTTPS开启官方文档](https://docs.influxdata.com/influxdb/v1.7/administration/https_setup/)
