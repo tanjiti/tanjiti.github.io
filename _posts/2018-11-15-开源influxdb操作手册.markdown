@@ -622,11 +622,11 @@ http://127.0.0.1:8086/query?chunked=true&db=_internal&q=select+derivative%28poin
 * 在避开keyword的情况下不使用特殊字符命名标识符（数据库名，存储策略，用户名，度量名，标签名，字段名） 
 * 避免过多的series,tag的取值不要太多
 * tag选用
- [ ] 不随时间变化
- [ ] 需要分组操作
+    * 不随时间变化
+    * 需要分组操作
 * field选用
- [ ] 随时间会发生变化
- [ ] 需要使用函数计算
+    * 随时间会发生变化
+    * 需要使用函数计算
 
 
 ## 数据查询
@@ -647,13 +647,18 @@ http://127.0.0.1:8086/query?chunked=true&db=_internal&q=select+derivative%28poin
  
 ## 数据删除
 * drop操作耗性能，请谨慎使用
+
 # 常见bug
+
 ## tag取值个数超过10w
+
 > partial write: max-values-per-tag limit exceeded (100000/100000)
 解决：
 修改配置
 `max-values-per-tag = 0`
+
 ## cache内存使用超过1g
+
 > Execute error[code:500][err:{"error":"engine: cache-max-memory-size exceeded: (1073741900/1073741824)”}
 解决：
 修改配置
