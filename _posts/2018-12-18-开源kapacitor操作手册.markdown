@@ -26,7 +26,7 @@ kapacitor属于TICK技术栈中的K，它定位为流式数据分析框架，包
 * 预警检测借鉴了nagios等成熟的监控方法，包括状态变更处理、抖动预警处理等
 
 
-* 事件输出源可以是influxdb,email,http post,tcp, log, telegram,kafka，,alerta,MQTT等
+* 事件输出源可以是influxdb,email,http post,tcp, log, telegram,kafka,alerta,MQTT等
 
 
 **核心概念**
