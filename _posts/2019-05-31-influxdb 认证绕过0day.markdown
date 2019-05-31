@@ -34,6 +34,9 @@ tags:
 
 成功
 
+# 漏洞原理
+JWT token shared-secret 默认为空
+
 >[JWT说明](http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html)
 
 >[0day原文](https://www.komodosec.com/post/when-all-else-fails-find-a-0-day)
