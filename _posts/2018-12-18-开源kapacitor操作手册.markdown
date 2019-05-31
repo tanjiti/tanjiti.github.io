@@ -1373,6 +1373,7 @@ options:
 ## tick调试
 
 * 使用httpOut节点输出数据
+
 * 查看/kapacitor/v1/tasks/，跟踪node-states
 
 ## 数据恢复
