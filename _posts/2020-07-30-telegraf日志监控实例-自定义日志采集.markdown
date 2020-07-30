@@ -1,0 +1,95 @@
+---
+layout:     post
+title:      "TICK-telegraf 日志监控实例-自定义日志采集"
+subtitle:   " inputs.logparser 插件"
+date:       2020-07-30 12:00:00
+author:     "tanjiti"
+header-img: "img/post-bg-2015.jpg"
+catalog: true
+tags:
+    - telegraf
+    - logparser
+    - grok
+---
+
+
+# 预备知识
+
+[telegraf日志监控实例](https://tanjiti.github.io/2019/06/13/telegraf%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7%E5%AE%9E%E4%BE%8B/)
+
+
+telegraf的inputs.logparser吸取了logstash的grok精髓
+
+## 语法
+
+
+```
+%{<capture_syntax>[:<semantic_name>][:<modifier>]}
+```
+
+
+
+
+* 第一个字段: pattern,先查看已有的pattern是否能满足，否则采用自定义pattern
+
+
+[telegraf封装的pattern](https://github.com/influxdata/telegraf/blob/master/plugins/parsers/grok/influx_patterns.go)
+
+[logstash原生pattern](https://github.com/logstash-plugins/logstash-patterns-core/blob/master/patterns/grok-patterns)
+
+ 
+ 
+* 第二个字段: 捕获的字段名
+
+ 
+* 第三个字段：修饰符
+
+telegraf常用的修饰符如下
+
+
+| 类型 |  说明|
+| --- | --- |
+| string | 字符串，默认类型 |
+| int|  整型|
+| float | 浮点型 |
+| duration |持续时间，可以将ms转换为ns  |
+| tag | 该字段标记为tag类型 |
+| drop | 不记录该字段 |
+
+
+ 例如，采集http响应码，命名为response_code,并将其存储为influxdb tag类型
+
+```
+%{NUMBER:response_code:tag}
+```
+
+## 实例
+
+
+
+### 日志实例
+
+```
+10.1.2.3 - [30/Jun/2020:10:50:52 +0800] "GET /api/v2/stat?time=15123 HTTP/1.1" 200 176157 "-" "Apache-HttpClient/4.5.2 (Java/1.7.0_80)" 0.106
+ 
+```
+
+### 调试工具
+
+[grok在线调试](https://grokdebug.herokuapp.com/)
+
+注：只支持grok语法，不支持telegraf封装的pattern
+
+![grok_e.x.](/img/grok_2.png)
+
+### telegraf配置
+
+```
+   [inputs.logparser.grok]
+
+     patterns = ["%{ACCESS_LOG}"]
+     custom_patterns = '''ACCESS_LOG %{IP:client_ip} %{NOTSPACE:ident} \[%{HTTPDATE:ts:ts-httpd}\] "(?:%{WORD:verb:tag} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version:float})?|%{DATA})" %{NUMBER:resp_code:tag} (?:%{NUMBER:resp_bytes:int}|-) "%{DATA:referrer}" "%{DATA:agent}" %{NUMBER:request_time:float}'''
+     measurement = "nginx_web_log"
+     timezone = "Asia/Shanghai"
+
+```
