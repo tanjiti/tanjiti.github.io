@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "那些年我研发的50%有用模块——IoC情报采集"
-subtitle:   " IP-Domain-File-URL"
+subtitle:   " IP-Domain-File"
 date:       2022-10-28 20:00:00
 author:     "tanjiti"
 header-img: "img/post-bg-2015.jpg"
@@ -12,20 +12,36 @@ tags:
     - malware analysis
 
 ---
+# 1. 模块功能
+全流量分析，提取恶意文件、Domain、IP IoC信息
 
-# 恶意样本IoC建设
+## 1.1 恶意样本IoC
 
 - 网络流量中提取恶意样本
+  - 恶意样本投递地址
+  - 恶意样本文件
 
 - 恶意样本家族识别，c2提取，攻击指令监控
 
-# Domain IoC建设
+## 1.2 Domain IoC
 - 网络流量中提取DNS通信数据
-- PassiveDNS
+- PassiveDNS构建
 - 恶意域名识别
 
-![](/img/domain-ioc.png)
+DNS数据威胁场景
+![DNS数据威胁场景](/img/domain-ioc.png)
 
+DNS安全数据生产
+![DNS数据威胁场景](/img/dns-data-producer.png)
 
+恶意域名识别
+![](/img/black-domain-ioc.png)
 
+  - 第三方情报检测模块：基于virustotal的恶意域名检测，可以获取域名关联的综合情报数据
+  - 规则检测模块: 基于suricata规则的恶意域名检测，基于先验知识，输出恶意域名
+  - 社区算法检测模块：基于DNS请求行为的检测，在无先验知识的情况下识别未知的恶意高危域名，输出恶意域名
 
+## 1.3 IP IoC
+- 网络流量威胁检测
+- 恶意IP识别
+![恶意IP识别](/img/pcap-ip-ioc-producer.png)
