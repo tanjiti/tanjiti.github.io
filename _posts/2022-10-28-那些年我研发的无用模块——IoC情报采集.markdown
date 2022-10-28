@@ -24,7 +24,7 @@ tags:
 - PassiveDNS
 - 恶意域名识别
 
-![](../img/domain-ioc.png)
+![](/img/domain-ioc.png)
 
 
 
