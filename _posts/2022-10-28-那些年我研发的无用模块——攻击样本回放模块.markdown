@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "那些年我研发的无用模块——攻击样本回放模块"
-subtitle:   " 攻击样本回放""
+subtitle:   " 攻击样本回放"
 date:       2022-10-28 12:00:00
 author:     "tanjiti"
 header-img: "img/post-bg-2015.jpg"
