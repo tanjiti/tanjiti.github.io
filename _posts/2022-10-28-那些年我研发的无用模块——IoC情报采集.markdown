@@ -7,12 +7,12 @@ author:     "tanjiti"
 header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
-    - SRE
-    - TICK
-    - 异常检测
-    - 自动化编排
-    - 无用模块
+    - PassiveDNS
+    - IoC
+    - malware analysis
+
 ---
+
 # 恶意样本IoC建设
 
 - 网络流量中提取恶意样本
@@ -24,8 +24,7 @@ tags:
 - PassiveDNS
 - 恶意域名识别
 
-![](/img/domain-ioc.png)
-
+![](../img/domain-ioc.png)
 
 
 
