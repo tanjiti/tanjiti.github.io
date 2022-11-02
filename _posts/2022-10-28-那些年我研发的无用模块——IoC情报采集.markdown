@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "那些年我研发的50%有用模块——IoC情报采集"
+title:      "那些年我研发的50%有用模块——全流量情报采集(ToDo)"
 subtitle:   " IP-Domain-File"
 date:       2022-10-28 20:00:00
 author:     "tanjiti"
@@ -10,38 +10,141 @@ tags:
     - PassiveDNS
     - IoC
     - malware analysis
+    - NTA
 
 ---
 # 1. 模块功能
-全流量分析，提取恶意文件、Domain、IP IoC信息
 
-## 1.1 恶意样本IoC
+## 1.1 IoC情报生产 
 
+分析网络流量，提取恶意文件、Domain、IP IoC情报信息
+
+### 恶意样本IoC
+![botnet通信模型](/img/botnet-communication.png)
 - 网络流量中提取恶意样本
-  - 恶意样本投递地址
+  - 恶意样本投递URL地址
   - 恶意样本文件
+- 恶意样本分析
+  - c2
+  - bot
+  - 攻击指令
 
-- 恶意样本家族识别，c2提取，攻击指令监控
 
-## 1.2 Domain IoC
-- 网络流量中提取DNS通信数据
+### Domain IoC
 - PassiveDNS构建
-- 恶意域名识别
+- 域名信誉库
 
+###  IP IoC
+- IP信誉库
+### ja3 IoC
+- ja3信誉库
+
+###  漏洞情报
+- 漏洞识别：披露被发现新型漏洞，促进漏洞研究
+
+### PCAP样本集
+- 开源恶意流量pcap数据集 （类似 malware-traffic-analysis.net)
+    - ddos攻击采样包
+    - botnet活动采样包
+- 开放PCAP在线分析能力
+  
+### 知识
+- 检测规则: 成为规则的Vendor
+  - 网络流量检测规则 suricata.rules 
+  - 文件检测规则 malware.yara 
+- 安全分析报告  
+  - 漏洞分析报告
+  - 攻击团伙报告
+  
+## 1.2 资产失陷事件情报生产
+
+分析网络流量，识别资产的攻击事件
+- 资产识别
+- 资产失陷检测
+
+# 2. 实现方法
+## 2.1 全流量分析
+- 流量采样：全量分析性能消耗大，因此采样分析
+- 威胁检测：使用suricata检测采样包生成alert日志
+- 资产威胁事件：alert日志的主体与资产关联，生成资产威胁事件
+
+
+## 2.2 恶意样本分析
+
+- 恶意样本提取
+![恶意样本提取](/img/malware-downloader.png)
+- 恶意样本分析
+  - 样本类型家族识别，e.x. mirai、mozi、gafgyt、ddostf、dofloo
+    - 已知样本：卡巴斯基接口和vt接口进行分析
+    - 未知样本：样本相似性、手工分析
+  - 攻击指令监控
+    - 样本养殖：开源沙箱+轻量级仿真模拟器
+    - 协议模拟：插件式的bot端模拟框架
+  - 恶意样本投递渠道分析：关联利用的资产漏洞
+
+## 2.3 DNS安全分析
 DNS数据威胁场景
+![DNS数据威胁场景](/img/dns_attack.png)
 ![DNS数据威胁场景](/img/domain-ioc.png)
 
-DNS安全数据生产
-![DNS数据威胁场景](/img/dns-data-producer.png)
-
-恶意域名识别
-![](/img/black-domain-ioc.png)
-
+- PassiveDNS构建：
+  - DNS响应流量解析
+  
+- 恶意域名识别
   - 第三方情报检测模块：基于virustotal的恶意域名检测，可以获取域名关联的综合情报数据
   - 规则检测模块: 基于suricata规则的恶意域名检测，基于先验知识，输出恶意域名
   - 社区算法检测模块：基于DNS请求行为的检测，在无先验知识的情况下识别未知的恶意高危域名，输出恶意域名
 
-## 1.3 IP IoC
-- 网络流量威胁检测
-- 恶意IP识别
+## 2.4 IP信誉库构建
+- IP威胁属性： 基于suricata alert事件的ip实体分类
 ![恶意IP识别](/img/pcap-ip-ioc-producer.png)
+- IP资产属性：基于suricata网络协议解析信息被动识别IP开放服务
+- IP事件属性：历史攻击事件关联
+
+# 3. 技术点
+向成熟产品学习技术点
+- [suricata](https://suricata.io/) 
+- [virustotal](https://www.virustotal.com/gui/intelligence-overview)
+
+
+
+# 4. 失败分析
+
+## 4.1 技术壁垒
+- 恶意样本分析能力比较初级
+- 网络基础数据安全分析能力初级 e.x. 对DGA的域名停滞在文本分析层面
+
+>虽然自我调侃过"一个人的威胁情报"，但其实中间有人来过又走了。。。
+
+>来了一个实习生，做DNS安全与流量，做到内伤然后转工程方向了
+> 也搞过联合分析，但分析几个后，就没有后续了。。
+
+ ![](/img/weibo-1.png)
+ ![](/img/weibo-2.png)
+
+## 4.2 模块价值不明显
+
+模块原意是从网络流量中生产IoC情报与资产失陷事件情报，和其他安全组件进行联动防御
+- 检测/防御型产品联动，基于IoC情报（攻击源主体、攻击特征）的分级防御（拦截、限速、验证码）
+- 响应型产品联动，DDoS攻击预警、资产失陷预警
+- 运营联动：漏洞情报等知识共享(e.x. Log4j的N种bypass姿势)，攻击大事件溯源
+
+但是联动失败了，推送的资产失陷事件没有得到响应
+- 网站被植入dofloo恶意文件
+- 网站被vbs挂马
+- 网站被植入图片网马
+- 网页挖矿：XMRig、HPool等
+- 资产被远控
+
+分析了一下可能有2种情况：
+- 推送给了非直接负责人
+- 有失陷事件检测的同类产品
+
+# 5. 个人收获
+## 网络流量分析
+- suricata技术栈
+- botnet
+# 恶意文件分析
+- 静态分析：botnet c2的寻找
+# 威胁情报分析
+- IoC情报
