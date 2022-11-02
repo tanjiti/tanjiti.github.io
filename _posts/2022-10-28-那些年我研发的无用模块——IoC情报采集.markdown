@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "那些年我研发的50%有用模块——全流量情报采集(ToDo)"
-subtitle:   " IP-Domain-File"
+title:      "那些年我研发的50%有用模块——全流量情报采集模块"
+subtitle:   " IoC情报与资产失陷情报"
 date:       2022-10-28 20:00:00
 author:     "tanjiti"
 header-img: "img/post-bg-2015.jpg"
