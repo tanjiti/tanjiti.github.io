@@ -8,8 +8,8 @@ header-img: "img/post-bg-2015.jpg"
 catalog: true
 tags:
     - PassiveDNS
-    - IoC
     - malware analysis
+    - IoC 
     - NTA
 
 ---
@@ -17,7 +17,7 @@ tags:
 
 ## 1.1 IoC情报生产 
 
-分析网络流量，提取恶意文件、Domain、IP IoC情报信息
+分析网络流量，提取恶意文件、风险Domain、IP等IoC情报信息
 
 ### 恶意样本IoC
 ![botnet通信模型](/img/botnet-communication.png)
@@ -36,16 +36,23 @@ tags:
 
 ###  IP IoC
 - IP信誉库
-### ja3 IoC
+
+### ssl/tls IoC
 - ja3信誉库
+- ja3s信誉库
+- jarm信誉库
 
 ###  漏洞情报
-- 漏洞识别：披露被发现新型漏洞，促进漏洞研究
+- 漏洞识别，促进漏洞研究
+  - 披露新型漏洞
+  - 统计漏洞趋势
 
 ### PCAP样本集
 - 开源恶意流量pcap数据集 （类似 malware-traffic-analysis.net)
-    - ddos攻击采样包
-    - botnet活动采样包
+    - DDoS攻击采样包
+    - Botnet活动采样包
+    - 漏洞利用采样包
+
 - 开放PCAP在线分析能力
   
 ### 知识
@@ -59,14 +66,14 @@ tags:
 ## 1.2 资产失陷事件情报生产
 
 分析网络流量，识别资产的攻击事件
-- 资产识别
-- 资产失陷检测
+- 资产识别：识别资产的端口服务，发现异常开放的端口服务
+- 资产失陷检测：发现植入后门的资产
 
 # 2. 实现方法
 ## 2.1 全流量分析
 - 流量采样：全量分析性能消耗大，因此采样分析
 - 威胁检测：使用suricata检测采样包生成alert日志
-- 资产威胁事件：alert日志的主体与资产关联，生成资产威胁事件
+- 资产威胁事件：alert日志中的主体与网络资产关联，生成资产威胁事件
 
 
 ## 2.2 恶意样本分析
@@ -80,7 +87,7 @@ tags:
   - 攻击指令监控
     - 样本养殖：开源沙箱+轻量级仿真模拟器
     - 协议模拟：插件式的bot端模拟框架
-  - 恶意样本投递渠道分析：关联利用的资产漏洞
+  - 恶意样本投递渠道分析：关联利用的资产漏洞或弱点
 
 ## 2.3 DNS安全分析
 DNS数据威胁场景
@@ -97,10 +104,22 @@ DNS数据威胁场景
 
 ## 2.4 IP信誉库构建
 - IP威胁属性： 基于suricata alert事件的ip实体分类
-![恶意IP识别](/img/pcap-ip-ioc-producer.png)
-- IP资产属性：基于suricata网络协议解析信息被动识别IP开放服务
+  ![恶意IP识别](/img/pcap-ip-ioc-producer.png)
+    - 被攻击主机 victim_host
+    - 失陷主机 compromised_host
+    - c2
+    - bot
+    - downloader
+- IP资产属性：基于suricata网络协议解析信息来被动识别IP开放服务
 - IP事件属性：历史攻击事件关联
-
+- IP家族属性：基于恶意样本的ip家族分类
+  - trojan.linux/mirai
+  - trojan.linux/gafgyt
+  - trojan.linux/tsunami
+  - trojan.linux/xorddos
+  - trojan.linux/dofloo
+  - ...
+  
 # 3. 技术点
 向成熟产品学习技术点
 - [suricata](https://suricata.io/) 
@@ -144,7 +163,9 @@ DNS数据威胁场景
 ## 5.1 网络流量分析技能
 - suricata技术栈
 - botnet
+
 ## 5.2 恶意文件分析技能
 - 静态分析：botnet c2的寻找
+
 ## 5.3 威胁情报分析技能
 - IoC情报
